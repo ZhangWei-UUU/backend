@@ -13,7 +13,7 @@ git remote add <branchName> <username>@<ip>:~/pathname/xx.git
 git branch -a
 ```
 
-
+3. 删除分支
 ## PM2管理
 
 ## Swagger
