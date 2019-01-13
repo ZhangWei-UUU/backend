@@ -1,5 +1,19 @@
 # Backend
 
+## 远程分支管理
+
+1. 本地仓库添加生产分支
+```
+git remote add <branchName> <username>@<ip>:~/pathname/xx.git
+```
+
+2. 查看本地仓库远程分支
+
+```
+git branch -a
+```
+
+
 ## PM2管理
 
 ## Swagger
