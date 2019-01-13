@@ -1,0 +1,16 @@
+{
+  "name": "ex",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:ZhangWei-UUU/backend.git",
+  "author": "ZhangWei <350095093@qq.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "4.16.4"
+  },
+  "scripts": {
+      "dev":"node index.js",
+      "prod":"pm2 start index.js",
+      "start":"pm2 start index.js"
+  }
+}
