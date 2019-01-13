@@ -11,6 +11,6 @@
   "scripts": {
       "dev":"node index.js",
       "prod":"pm2 start index.js",
-      "start":"pm2 start index.js"
+      "start":"node index.js"
   }
 }
