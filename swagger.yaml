@@ -1,0 +1,39 @@
+swagger: "2.0" 
+info:
+  description: "逗比网后台"
+  # 当前API接口的版本号
+  version: "1.0.0"
+  # API接口名称
+  title: "逗比网后台"
+  
+  termsOfService: ""
+  contact:
+    email: "kanseefoil@gmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+# 后台API主机的网址
+host: "backend.funningcoin.cn"
+# 基础统一的路径
+basePath: "/"
+
+schemes:
+- "http"
+- "https"
+
+paths: 
+  /:
+    get:
+      tags:
+      - "默认测试主机是否畅通"
+      summary: "Find pet by ID"
+      description: "Returns a single pet"
+      operationId: "getPetById"
+      responses:
+        200:
+          description: 响应成功
+        400:
+          description: valid
+        500:
+          description: 服务器问题
+           
