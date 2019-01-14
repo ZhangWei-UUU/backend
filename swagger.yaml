@@ -16,14 +16,61 @@ info:
 # 后台API主机的网址
 host: "backend.funningcoin.cn"
 # 基础统一的路径
-basePath: "/test2"
+basePath: "/"
 
 schemes:
 - "http"
 - "https"
 
 paths: 
-  /:
+  /authentiication/registry:
+    post:
+      tags:
+      - "注册接口"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Created user object"
+        required: true
+      responses:
+        200:
+          description: 注册成功
+        400:
+          description: valid
+        500:
+          description: 服务器问题
+
+  /authentiication/login:
+    post:
+      tags:
+      - "登录接口"
+      responses:
+        200:
+          description: 登录成功
+        400:
+          description: valid
+        500:
+          description: 服务器问题
+  /ws:
+    get:
+      tags:
+      - "默认测试主机是否畅通"
+      summary: "Find pet by ID"
+      description: "Returns a single pet"
+
+      responses:
+        200:
+          description: 响应成功
+          schema:
+            $ref: "#/definitions/User"
+        400:
+          description: valid
+        500:
+          description: 服务器问题
+  /ws/about:
     get:
       tags:
       - "默认测试主机是否畅通"

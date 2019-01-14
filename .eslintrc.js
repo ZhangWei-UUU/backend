@@ -1,26 +1,18 @@
 module.exports = {
-    "parser": "babel-eslint",
     "env": {
         "browser": true,
         "commonjs": true,
-        "es6": true,
-        "node": true
+        "es6": true
     },
-    "extends": ["eslint:recommended","plugin:react/recommended"],
+    "extends": "eslint:recommended",
     "parserOptions": {
-        "ecmaFeatures": {
-            "experimentalObjectRestSpread": true,
-            "jsx": true
-        },
+        "ecmaVersion": 2017,
         "sourceType": "module"
     },
-    "plugins": [
-        "react"
-    ],
     "rules": {
         "indent": [
             "error",
-            4
+            "tab"
         ],
         "linebreak-style": [
             "error",

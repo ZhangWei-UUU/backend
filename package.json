@@ -6,11 +6,18 @@
   "author": "ZhangWei <350095093@qq.com>",
   "license": "MIT",
   "dependencies": {
-    "express": "4.16.4"
+    "connect-mongo": "2.0.3",
+    "connect-mongodb-session": "2.0.6",
+    "cookie-parser": "1.4.3",
+    "express": "4.16.4",
+    "express-session": "1.15.6",
+    "mongodb": "3.1.10",
+    "nodemon": "1.18.9"
   },
   "scripts": {
-      "dev":"node index.js",
-      "prod":"pm2 start index.js",
-      "start":"node index.js"
+    "dev": "export NODE_ENV=development && export DB_PORT=27017 && nodemon index.js",
+    "build": "next build && export NODE_ENV=production && export DB_PORT=27017 && nodemon index.js",
+    "test": "jest",
+    "start": "next build && export NODE_ENV=production &&  export DB_HOST=172.17.0.2 && export DB_PORT=27017 && nodemon index.js"
   }
 }
