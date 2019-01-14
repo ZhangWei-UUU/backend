@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express()
+const ws = require("./router/ws");
 
+app.use('/ws',ws);
 app.get("/", (req, res) => res.send({name:"zhangwei"}))
 app.get("/test2", (req, res) => res.send({name:"zhangwei2"}))
 

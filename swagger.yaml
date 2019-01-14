@@ -1,3 +1,4 @@
+
 swagger: "2.0" 
 info:
   description: "逗比网后台"
@@ -15,7 +16,7 @@ info:
 # 后台API主机的网址
 host: "backend.funningcoin.cn"
 # 基础统一的路径
-basePath: "/"
+basePath: "/test2"
 
 schemes:
 - "http"
@@ -28,12 +29,20 @@ paths:
       - "默认测试主机是否畅通"
       summary: "Find pet by ID"
       description: "Returns a single pet"
-      operationId: "getPetById"
+
       responses:
         200:
           description: 响应成功
+          schema:
+            $ref: "#/definitions/User"
         400:
           description: valid
         500:
           description: 服务器问题
-           
+definitions:
+  User:
+    type: object
+    properties: 
+      name :
+        type : string
+
