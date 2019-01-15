@@ -23,18 +23,16 @@ schemes:
 - "https"
 
 paths: 
-  /authentiication/registry:
+  /authentication/registry:
     post:
-      tags:
-      - "注册接口"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "Created user object"
-        required: true
+      summary: "注册接口"
+      parameters: 
+        - name: userName
+          in: body
+          required: true
+          description: task object
+          schema: 
+            type: string
       responses:
         200:
           description: 注册成功
@@ -43,17 +41,6 @@ paths:
         500:
           description: 服务器问题
 
-  /authentiication/login:
-    post:
-      tags:
-      - "登录接口"
-      responses:
-        200:
-          description: 登录成功
-        400:
-          description: valid
-        500:
-          description: 服务器问题
   /ws:
     get:
       tags:
