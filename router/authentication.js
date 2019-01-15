@@ -1,7 +1,14 @@
 var express = require('express');
 var router = express.Router();
 const MongoClient = require("mongodb").MongoClient;
+var hash = require("hash.js");
 const DB_CONFIG = require("../db");
+const {queryData} = require('./mongoClient');
+
+router.get('/userlist', async (req, res)=>{
+    const result = await queryData({},"users");
+    res.send(result)
+})
 
 router.post('/registry', function(req, res) {
     MongoClient.connect(DB_CONFIG.url, function(err, client) {
@@ -11,7 +18,8 @@ router.post('/registry', function(req, res) {
           const db = client.db(DB_CONFIG.dbname);
           const hashPassword = hash.sha256().update(req.body.password).digest("hex");
           const collection = db.collection("users");
-          const user = new User(req.body.userName,hashPassword);
+          const user = {userName:req.body.userName,password:hashPassword};
+         
           collection.insertOne(user,(err)=>{
             if(err){
               res.send(DB_CONFIG.collectionError);

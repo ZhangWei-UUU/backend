@@ -14,7 +14,7 @@ info:
     name: "Apache 2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
 # 后台API主机的网址
-host: "backend.funningcoin.cn"
+host: "localhost:3010"
 # 基础统一的路径
 basePath: "/"
 
@@ -27,12 +27,17 @@ paths:
     post:
       summary: "注册接口"
       parameters: 
-        - name: userName
+        - name: user
           in: body
           required: true
           description: task object
           schema: 
-            type: string
+            type: object
+            properties:
+              userName:
+                type: string
+              password:
+                type: string
       responses:
         200:
           description: 注册成功

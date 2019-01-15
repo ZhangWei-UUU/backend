@@ -12,20 +12,20 @@ const authentication = require('./router/authentication');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-var store = new MongoDBStore({
-    uri: `${DB_CONFIG.url}/session`,
-    collection: "sessions"
-});
+// var store = new MongoDBStore({
+//     uri: `${DB_CONFIG.url}/session`,
+//     collection: "sessions"
+// });
 
-app.use(require("express-session")({
-  secret: "This is a secret",
-  cookie: {
-    maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
-  },
-  store: store,
-  resave: true,
-  saveUninitialized: true
-}));
+// app.use(require("express-session")({
+//   secret: "This is a secret",
+//   cookie: {
+//     maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+//   },
+//   store: store,
+//   resave: true,
+//   saveUninitialized: true
+// }));
 
 app.use(cookieParser());
 app.use('/authentication',authentication);
