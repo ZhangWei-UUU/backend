@@ -45,7 +45,24 @@ paths:
           description: valid
         500:
           description: 服务器问题
-
+  /authentication/uploadUserHeader:
+    post:
+      tags:
+      - "用户上传头像"
+      summary: ""
+      consumes:
+      - "multipart/form-data"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "file"
+        in: "formData"
+        description: "file to upload"
+        required: false
+        type: "file"
+      responses:
+        200:
+          description: "successful operation"
   /ws:
     get:
       tags:

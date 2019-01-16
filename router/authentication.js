@@ -1,10 +1,23 @@
 var express = require('express');
+const fs = require("fs");
+const path = require('path');
+var multer  = require('multer')
 var router = express.Router();
 const MongoClient = require("mongodb").MongoClient;
 var hash = require("hash.js");
 const DB_CONFIG = require("../db");
 const {queryData} = require('./mongoClient');
 
+const upload = multer({
+    dest: "/Users/zhangwei/Desktop"
+});
+
+const handleError = (err, res) => {
+    res
+      .status(500)
+      .contentType("text/plain")
+      .end("Oops! Something went wrong!");
+};
 router.get('/userlist', async (req, res)=>{
     const result = await queryData({},"users");
     res.send(result)
@@ -60,5 +73,31 @@ router.post('/login', function(req, res) {
 router.post('/logout', function(req, res) {
     res.send({title:"/ws"});
 });
+
+router.get('/uploadUserHeader', function(req, res) {
+    console.log("调用上传接口")
+    res.send({title:"/ws"});
+});
+
+router.post('/uploadUserHeader',upload.single('file'),(req,res)=>{
+    const tempPath = req.file.path;
+    const targetPath = path.join(__dirname, "../images/image.png");
+    if (path.extname(req.file.originalname).toLowerCase() === ".png") {
+        console.log("调用上传接口",req.file,targetPath)
+        fs.rename(tempPath, targetPath, err => {
+          if (err) return handleError(err, res);
+          res
+            .status(200)
+            .end("File uploaded!");
+        });
+      }else {
+        fs.unlink(tempPath, err => {
+          if (err) return handleError(err, res);
+          res
+            .status(403)
+            .end("Only .png files are allowed!");
+        });
+      }
+})
 
 module.exports = router;
