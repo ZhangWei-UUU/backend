@@ -74,16 +74,10 @@ router.post('/logout', function(req, res) {
     res.send({title:"/ws"});
 });
 
-router.get('/uploadUserHeader', function(req, res) {
-    console.log("调用上传接口")
-    res.send({title:"/ws"});
-});
-
 router.post('/uploadUserHeader',upload.single('file'),(req,res)=>{
     const tempPath = req.file.path;
     const targetPath = path.join(__dirname, "../images/image.png");
     if (path.extname(req.file.originalname).toLowerCase() === ".png") {
-        console.log("调用上传接口",req.file,targetPath)
         fs.rename(tempPath, targetPath, err => {
           if (err) return handleError(err, res);
           res
