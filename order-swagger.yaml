@@ -1,0 +1,124 @@
+
+swagger: "2.0" 
+info:
+  description: "订单增删改查"
+  version: "1.0.0"
+  title: "订单"
+  
+  termsOfService: ""
+  contact:
+    email: "kanseefoil@gmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+# 后台API主机的网址
+host: "localhost:3010"
+# 基础统一的路径
+basePath: "/"
+
+schemes:
+- "http"
+- "https"
+
+paths: 
+  /order/orders/all:
+    get:
+      tags:
+      - "获取订单数据"
+      summary: "获取订单数据"
+      responses:
+        200:
+          description: "successful operation"
+  /order/insertSingleOrder:
+    post:
+      tags:
+      - "新建订单"
+      summary: "新建订单"
+      parameters: 
+        - name: order
+          in: body
+          required: true
+          description: task object
+          schema: 
+            type: object
+            properties:
+              id:
+                type: string
+                example: "21a21sf12"
+              datetime:
+                type: string
+                example: "2019-02-21"
+              orderer:
+                type: string
+                example: "张伟"
+              address:
+                type: string
+                example: "上海"
+              telphone:
+                type: string
+                example: "1820322321"
+              contact:
+                type: string
+              goods:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    title: 
+                      type: string
+
+      responses:
+        200:
+          description: 订单创建成功
+        400:
+          description: valid
+        500:
+          description: 服务器问题'
+  /customer/insertSingleCustomer:
+    post:
+      tags:
+      - "添加客户"
+      summary: "添加客户"
+      parameters: 
+        - name: customer
+          in: body
+          required: true
+          description: 商务客户
+          schema: 
+            type: object
+            properties:
+              name:
+                type: string
+                example: "黄鹤大酒店"
+              address:
+                type: string
+                example: "上海宝山区"
+              code:
+                type: string
+                example: "1820322321"
+              contactors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name: 
+                      type: string
+                      example: "张伟"
+                    tel: 
+                      type: string
+                      example: "18221392122"
+
+      responses:
+        200:
+          description: 订单创建成功
+        400:
+          description: valid
+        500:
+          description: 服务器问题
+definitions:
+  User:
+    type: object
+    properties: 
+      name :
+        type : string
+
