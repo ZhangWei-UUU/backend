@@ -74,6 +74,18 @@ paths:
           description: valid
         500:
           description: 服务器问题'
+  /customer/all:
+    get:
+      tags:
+      - "获取全部客户信息"
+      summary: "获取全部客户信息"
+      responses:
+        200:
+          description: 成功
+        400:
+          description: 客户端调用错误
+        500:
+          description: 服务器问题
   /customer/insertSingleCustomer:
     post:
       tags:

@@ -6,6 +6,8 @@ var bodyParser = require("body-parser");
 var cookieParser = require("cookie-parser");
 const ws = require("./router/ws");
 const order = require("./router/order");
+const customer = require("./router/customer");
+
 const DB_CONFIG = require("./db");
 
 const authentication = require('./router/authentication');
@@ -31,6 +33,7 @@ app.use(cookieParser());
 app.use('/authentication',authentication);
 app.use('/ws',ws);
 app.use('/order',order);
+app.use('/customer',customer);
 app.get("/", (req, res) => res.send({name:"zhangwei"}))
 app.get("/test2", (req, res) => res.send({name:"zhangwei2"}))
 

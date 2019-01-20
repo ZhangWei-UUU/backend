@@ -2,24 +2,23 @@ var express = require('express');
 var router = express.Router();
 var { queryData,insertSingle,deleteSingle,updateSingle } = require('../mongoClient');
 
-router.get('/customer/:customerId', async (req, res)=> {
-    if(req.params.orderId === "all"){
-        const result = await queryData({},"customers");
+router.get('/:customerId', async (req, res)=> {
+    if(req.params.customerId === "all"){
+        const result = await queryData(null,"customers");
         res.send(result)
     }else{
-        const result = await queryData({id:orderId},"customers");
+        const result = await queryData(req.params.customerId,"customers");
         res.send(result)
-    }
-    
+    } 
 });
 
-router.post('/insertSingleCustomer', async (req, res)=> {
+router.post('/', async (req, res)=> {
     const object = req.body;
     const result = await insertSingle(object,"customers");
     res.send(result)
 });
 
-router.delete('/deleteSingleCustomer/:id',async (req, res)=>  {
+router.delete('/:id',async (req, res)=>  {
     const result = await deleteSingle(req.params.id,"customers");
     res.send(result)
 });

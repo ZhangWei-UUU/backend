@@ -1,15 +1,22 @@
 const MongoClient = require("mongodb").MongoClient;
+var ObjectId = require('mongodb').ObjectID;
 const DB_CONFIG = require("../db");
 
 module.exports = {
-    queryData: async (query={},collectionName) => {
-      let db, client;
+    queryData: async (id,collectionName) => {
+      let db, client,queryObject;
+      client = await MongoClient.connect(DB_CONFIG.url, { useNewUrlParser: true });
+      db = client.db(DB_CONFIG.dbname);
+      
       try {
-        client = await MongoClient.connect(DB_CONFIG.url, { useNewUrlParser: true });
-        db = client.db(DB_CONFIG.dbname);
-        return await db.collection(collectionName).find(query).toArray();
+          if(id){
+            queryObject = { "_id" : ObjectId(`${id}`) }
+            return await db.collection(collectionName).findOne(queryObject);
+          }else{
+            return await db.collection(collectionName).find({}).toArray();
+          }   
       } catch(err){
-        throw new Error(err)
+        return {success:false,message:err}
       }finally {
         client.close();
       }
@@ -41,14 +48,15 @@ module.exports = {
         }
     },
 
-    deleteSingle: async (id,userId,collectionName) => {
+    deleteSingle: async (id,collectionName) => {
         let db, client;
+        client = await MongoClient.connect(DB_CONFIG.url, { useNewUrlParser: true });
+        db = client.db(DB_CONFIG.dbname);
+        var deletedObject = { "_id" : ObjectId(`${id}`) }
         try {
-          client = await MongoClient.connect(DB_CONFIG.url, { useNewUrlParser: true });
-          db = client.db(DB_CONFIG.dbname);
-          return await db.collection(collectionName).remove({id:id})
+          return await db.collection(collectionName).findOneAndDelete(deletedObject)
         } catch(err){
-          throw new Error(err)
+          return {success:false,message:err}
         }finally {
           client.close();
         }
