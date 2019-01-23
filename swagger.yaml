@@ -35,7 +35,8 @@ paths:
           description: 服务器问题 
   /authentication/login:
     post:
-      summary: "注册接口"
+      tag: 登录
+      summary: "登录接口"
       parameters: 
         - name: user
           in: body

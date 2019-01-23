@@ -3,6 +3,24 @@ var ObjectId = require('mongodb').ObjectID;
 const DB_CONFIG = require("../db");
 
 module.exports = {
+    queryUser: async (user,collectionName) => {
+        let db, client;
+        client = await MongoClient.connect(DB_CONFIG.url, { useNewUrlParser: true });
+        db = client.db(DB_CONFIG.dbname);
+        
+        try {
+            if(user){
+                queryObject = { userName : user.userName,password:user.password };
+                return await db.collection(collectionName).findOne(queryObject);
+              }else{
+                return await db.collection(collectionName).find({}).toArray();
+              }   
+        } catch(err){
+          return {success:false,message:err}
+        }finally {
+          client.close();
+        }
+    },
     queryData: async (id,collectionName) => {
       let db, client,queryObject;
       client = await MongoClient.connect(DB_CONFIG.url, { useNewUrlParser: true });

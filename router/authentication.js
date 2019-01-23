@@ -6,7 +6,7 @@ var router = express.Router();
 const MongoClient = require("mongodb").MongoClient;
 var hash = require("hash.js");
 const DB_CONFIG = require("../db");
-const {queryData} = require('./mongoClient');
+const {queryUser} = require('./mongoClient');
 
 const upload = multer({
     dest: "/Users/zhangwei/Desktop"
@@ -19,9 +19,18 @@ const handleError = (err, res) => {
       .end("Oops! Something went wrong!");
 };
 router.get('/userlist', async (req, res)=>{
-    const result = await queryData({},"users");
+    const result = await queryUser(null,"users");
     res.send(result)
 })
+
+router.post('/login', async (req, res)=> {
+    const password = hash.sha256().update(req.body.password).digest("hex");
+    let result = await queryUser({userName:req.body.userName,password},"users");
+    delete result.password;
+    let timestamp = new Date().getTime();
+    result.token = result._id + timestamp;
+    res.send({success:true,result})
+});
 
 router.post('/registry', function(req, res) {
     MongoClient.connect(DB_CONFIG.url, function(err, client) {
@@ -44,30 +53,7 @@ router.post('/registry', function(req, res) {
       });
 });
 
-router.post('/login', function(req, res) {
-    MongoClient.connect(DB_CONFIG.url, function(err, client) {
-        if(err){
-          res.send(DB_CONFIG.dbError);
-        }else{
-          const db = client.db(DB_CONFIG.dbname);
-          const collection = db.collection("users");
-          const password = hash.sha256().update(req.body.password).digest("hex");
-          let {userName} = req.body;
-          collection.findOne({userName,password},(err,data)=>{
-            if(err){
-              res.send(DB_CONFIG.collectionError);
-            }else{
-              if(data){
-                req.session.loginUser = userName;
-                res.send({success:true,message:`${data.userName}登录成功`});
-              }else{
-                res.send({success:false,message:"用户名或密码错误,输入错误超过三次以上账户将会被冻结1小时"});
-              } 
-            }
-          });
-        }
-      }); 
-});
+
 
 router.post('/logout', function(req, res) {
     res.send({title:"/ws"});
