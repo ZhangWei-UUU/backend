@@ -61,7 +61,6 @@ router.post('/login', function(req, res) {
                 req.session.loginUser = userName;
                 res.send({success:true,message:`${data.userName}登录成功`});
               }else{
-                errorRecorder(req,userName);
                 res.send({success:false,message:"用户名或密码错误,输入错误超过三次以上账户将会被冻结1小时"});
               } 
             }

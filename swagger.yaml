@@ -1,11 +1,11 @@
 
 swagger: "2.0" 
 info:
-  description: "逗比网后台"
+  description: "后台"
   # 当前API接口的版本号
   version: "1.0.0"
   # API接口名称
-  title: "逗比网后台"
+  title: "后台"
   
   termsOfService: ""
   contact:
@@ -22,7 +22,39 @@ schemes:
 - "http"
 - "https"
 
-paths: 
+paths:
+  /authentication/userlist:
+    get:
+      summary: "用户全部数据列表"
+      responses:
+        200:
+          description: 注册成功
+        400:
+          description: valid
+        500:
+          description: 服务器问题 
+  /authentication/login:
+    post:
+      summary: "注册接口"
+      parameters: 
+        - name: user
+          in: body
+          required: true
+          description: task object
+          schema: 
+            type: object
+            properties:
+              userName:
+                type: string
+              password:
+                type: string
+      responses:
+        200:
+          description: 注册成功
+        400:
+          description: valid
+        500:
+          description: 服务器问题
   /authentication/registry:
     post:
       summary: "注册接口"
@@ -63,38 +95,7 @@ paths:
       responses:
         200:
           description: "successful operation"
-  /ws:
-    get:
-      tags:
-      - "默认测试主机是否畅通"
-      summary: "Find pet by ID"
-      description: "Returns a single pet"
-
-      responses:
-        200:
-          description: 响应成功
-          schema:
-            $ref: "#/definitions/User"
-        400:
-          description: valid
-        500:
-          description: 服务器问题
-  /ws/about:
-    get:
-      tags:
-      - "默认测试主机是否畅通"
-      summary: "Find pet by ID"
-      description: "Returns a single pet"
-
-      responses:
-        200:
-          description: 响应成功
-          schema:
-            $ref: "#/definitions/User"
-        400:
-          description: valid
-        500:
-          description: 服务器问题
+  
 definitions:
   User:
     type: object
