@@ -28,6 +28,9 @@ paths:
       tags:
       - "获取用户列表"
       summary: "用户全部数据列表"
+      parameters:
+        - in: query
+        name: token
       responses:
         200:
           description: 注册成功

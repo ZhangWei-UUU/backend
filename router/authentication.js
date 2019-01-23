@@ -14,13 +14,26 @@ const upload = multer({
     dest: "/Users/zhangwei/Desktop"
 });
 
+const checkToken = (req,res,next) => {
+    const token  = req.query.token;
+    jwt.verify(token, secret, function (err, decoded) {
+        if (!err){
+              console.log(decoded.name);  //会输出123，如果过了60秒，则有错误。
+         }else{
+             console.log("error")
+         }
+    })
+    return next();
+}
+
 const handleError = (err, res) => {
     res
       .status(500)
       .contentType("text/plain")
       .end("Oops! Something went wrong!");
 };
-router.get('/userlist', async (req, res)=>{
+
+router.get('/userlist', checkToken,async (req, res)=>{
     const result = await queryUser(null,"users");
     res.send(result)
 })
