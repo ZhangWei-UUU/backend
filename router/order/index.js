@@ -9,8 +9,7 @@ router.get('/orders/:orderId', async (req, res)=> {
     }else{
         const result = await queryData({id:orderId},"orders");
         res.send(result)
-    }
-    
+    }  
 });
 
 router.post('/insertSingleOrder', async (req, res)=> {

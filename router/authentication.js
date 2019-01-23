@@ -2,6 +2,8 @@ var express = require('express');
 const fs = require("fs");
 const path = require('path');
 var multer  = require('multer')
+const jwt = require('jsonwebtoken');
+const secret = "zhangwei1988";
 var router = express.Router();
 const MongoClient = require("mongodb").MongoClient;
 var hash = require("hash.js");
@@ -27,8 +29,12 @@ router.post('/login', async (req, res)=> {
     const password = hash.sha256().update(req.body.password).digest("hex");
     let result = await queryUser({userName:req.body.userName,password},"users");
     delete result.password;
-    let timestamp = new Date().getTime();
-    result.token = result._id + timestamp;
+    const token = jwt.sign({
+        name: req.body.userName
+     }, secret, {
+        expiresIn:  120 //秒到期时间
+     });
+    result.token = token;
     res.send({success:true,result})
 });
 

@@ -24,9 +24,9 @@ schemes:
 
 paths:
   /authentication/userlist:
-    tags:
-      - "获取用户列表"
     get:
+      tags:
+      - "获取用户列表"
       summary: "用户全部数据列表"
       responses:
         200:
@@ -50,8 +50,10 @@ paths:
             properties:
               userName:
                 type: string
+                example: admin
               password:
                 type: string
+                example: admin
       responses:
         200:
           description: 注册成功
@@ -59,6 +61,18 @@ paths:
           description: valid
         500:
           description: 服务器问题
+  /order/orders/all:
+    get:
+      tags:
+      - "获取订单数据[需有TOKEN]"
+      summary: "获取订单数据"
+      responses:
+        200:
+          description: 获取订单列表成功
+        403:
+          description: 无权限
+        500:
+          description: 服务器非正常运转
   /authentication/registry:
     post:
       tags:
