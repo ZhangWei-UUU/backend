@@ -16,14 +16,16 @@ const upload = multer({
 
 const checkToken = (req,res,next) => {
     const token  = req.query.token;
+    console.log(token)
     jwt.verify(token, secret, function (err, decoded) {
         if (!err){
               console.log(decoded.name);  //会输出123，如果过了60秒，则有错误。
+              return next();
          }else{
-             console.log("error")
+            res.status(403).json(err)
          }
     })
-    return next();
+    
 }
 
 const handleError = (err, res) => {
@@ -45,7 +47,7 @@ router.post('/login', async (req, res)=> {
     const token = jwt.sign({
         name: req.body.userName
      }, secret, {
-        expiresIn:  120 //秒到期时间
+        expiresIn:  30 //秒到期时间
      });
     result.token = token;
     res.send({success:true,result})
