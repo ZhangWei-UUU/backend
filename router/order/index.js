@@ -4,7 +4,7 @@ var { queryData,insertSingle,deleteSingle,updateSingle } = require('../mongoClie
 
 router.get('/orders/:orderId', async (req, res)=> {
     if(req.params.orderId === "all"){
-        const result = await queryData({},"orders");
+        const result = await queryData(null,"orders");
         res.send(result)
     }else{
         const result = await queryData({id:orderId},"orders");
