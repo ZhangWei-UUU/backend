@@ -6,9 +6,8 @@ const jwt = require('jsonwebtoken');
 const secret = "zhangwei1988";
 var router = express.Router();
 const MongoClient = require("mongodb").MongoClient;
-var hash = require("hash.js");
 const DB_CONFIG = require("../db");
-const {queryUser} = require('./mongoClient');
+const {insertSingle,queryUser} = require('./mongoClient');
 const checkToken = require('./checkToken');
 const upload = multer({
     dest: "/Users/zhangwei/Desktop"
@@ -22,42 +21,34 @@ const handleError = (err, res) => {
 };
 
 router.get('/userlist', checkToken,async (req, res)=>{
+   
     const result = await queryUser(null,"users");
     res.send(result)
 })
 
 router.post('/login', async (req, res)=> {
-    const password = hash.sha256().update(req.body.password).digest("hex");
-    let result = await queryUser({userName:req.body.userName,password},"users");
-    delete result.password;
-    const token = jwt.sign({
-        name: req.body.userName
-     }, secret, {
-        expiresIn:  60*60*12 //秒到期时间
-     });
-    result.token = token;
-    res.send({success:true,result})
+    const object = req.body;
+    let result = await queryUser(object,"users");
+    if(result){
+        delete result.password;
+        const token = jwt.sign({
+            name: req.body.userName
+         }, secret, {
+            expiresIn:  30 //秒到期时间
+         });
+        result.token = token;
+        res.cookie('jwt', token);
+        res.send({success:true,result})
+    }else{
+        res.send({success:false,result:"密码错误或用户名不存在"})
+    }
+   
 });
 
-router.post('/registry', function(req, res) {
-    MongoClient.connect(DB_CONFIG.url, function(err, client) {
-        if(err){
-          res.send(DB_CONFIG.dbError);
-        }else{
-          const db = client.db(DB_CONFIG.dbname);
-          const hashPassword = hash.sha256().update(req.body.password).digest("hex");
-          const collection = db.collection("users");
-          const user = {userName:req.body.userName,password:hashPassword};
-         
-          collection.insertOne(user,(err)=>{
-            if(err){
-              res.send(DB_CONFIG.collectionError);
-            }else{
-              res.send({success:true,message:"注册成功"});
-            }
-          });
-        }
-      });
+router.post('/registry', async (req, res)=>{
+    const object = req.body;
+    const result = await insertSingle(object,"users");
+    res.send(result)
 });
 
 
