@@ -34,7 +34,7 @@ router.post('/login', async (req, res)=> {
         const token = jwt.sign({
             name: req.body.userName
          }, secret, {
-            expiresIn:  30 //秒到期时间
+            expiresIn:  60*60*24 //秒到期时间
          });
         result.token = token;
         res.cookie('jwt', token);
