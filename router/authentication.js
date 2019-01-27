@@ -5,8 +5,6 @@ var multer  = require('multer')
 const jwt = require('jsonwebtoken');
 const secret = "zhangwei1988";
 var router = express.Router();
-const MongoClient = require("mongodb").MongoClient;
-const DB_CONFIG = require("../db");
 const {insertSingle,queryUser} = require('./mongoClient');
 const checkToken = require('./checkToken');
 const upload = multer({
@@ -21,7 +19,6 @@ const handleError = (err, res) => {
 };
 
 router.get('/userlist', checkToken,async (req, res)=>{
-   
     const result = await queryUser(null,"users");
     res.send(result)
 })
@@ -34,10 +31,11 @@ router.post('/login', async (req, res)=> {
         const token = jwt.sign({
             name: req.body.userName
          }, secret, {
-            expiresIn:  60*60*24 //秒到期时间
+            expiresIn:  30 //秒到期时间
          });
-        result.token = token;
-        res.cookie('jwt', token);
+        res.cookie('jwt',token);
+        res.cookie('userId',result._id);
+        res.cookie('userName',result.userName);
         res.send({success:true,result})
     }else{
         res.send({success:false,result:"密码错误或用户名不存在"})
@@ -53,8 +51,9 @@ router.post('/registry', async (req, res)=>{
 
 
 
-router.post('/logout', function(req, res) {
-    res.send({title:"/ws"});
+router.get('/logout', function(req, res) {
+    res.clearCookie('jwt');
+    res.send({success:true});
 });
 
 router.post('/uploadUserHeader',upload.single('file'),(req,res)=>{
