@@ -1,6 +1,6 @@
-const { DB_PORT,DB_HOST} = process.env;
+const { DB_PORT,DB_HOST,DB_NAME} = process.env;
 const url = `mongodb://${DB_HOST || "localhost"}:${DB_PORT || 27017}`;
-const dbname = "testdb";
+const dbname = DB_NAME || 'tmpdb';
 const DB_CONFIG = {
     url,
     dbname,
