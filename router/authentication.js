@@ -31,9 +31,9 @@ router.post('/login', async (req, res)=> {
         const token = jwt.sign({
             name: req.body.userName
          }, secret, {
-            expiresIn:  30 //秒到期时间
+            expiresIn:  1000*60*10 //100分钟到期时间
          });
-        res.cookie('jwt',token);
+        res.cookie('jwt',token,{maxAge:1000*60*10});
         res.cookie('userId',result._id);
         res.cookie('userName',result.userName);
         res.send({success:true,result})
@@ -53,6 +53,8 @@ router.post('/registry', async (req, res)=>{
 
 router.get('/logout', function(req, res) {
     res.clearCookie('jwt');
+    res.clearCookie('userId');
+    res.clearCookie('userName');
     res.send({success:true});
 });
 
