@@ -8,8 +8,9 @@ var router = express.Router();
 const {insertSingle,queryUser} = require('./mongoClient');
 const checkToken = require('./checkToken');
 const upload = multer({
-    dest: "/Users/zhangwei/Desktop"
+    dest: "/Users/zhangwei"
 });
+
 
 const handleError = (err, res) => {
     res
@@ -19,6 +20,7 @@ const handleError = (err, res) => {
 };
 
 router.get('/userlist', checkToken,async (req, res)=>{
+    console.log(req.cookies)
     const result = await queryUser(null,"users");
     res.send(result)
 })
@@ -43,12 +45,12 @@ router.post('/login', async (req, res)=> {
    
 });
 
+
 router.post('/registry', async (req, res)=>{
     const object = req.body;
     const result = await insertSingle(object,"users");
     res.send(result)
 });
-
 
 
 router.get('/logout', function(req, res) {
@@ -60,8 +62,9 @@ router.get('/logout', function(req, res) {
 
 router.post('/uploadUserHeader',upload.single('file'),(req,res)=>{
     const tempPath = req.file.path;
-    const targetPath = path.join(__dirname, "../images/image.png");
-    if (path.extname(req.file.originalname).toLowerCase() === ".png") {
+    console.log(req.cookies)
+    const targetPath = path.join(process.env.FILE_STORE, `./${req.cookies.userId}header.jpg`);
+    if (path.extname(req.file.originalname).toLowerCase() === ".jpg") {
         fs.rename(tempPath, targetPath, err => {
           if (err) return handleError(err, res);
           res
@@ -73,7 +76,7 @@ router.post('/uploadUserHeader',upload.single('file'),(req,res)=>{
           if (err) return handleError(err, res);
           res
             .status(403)
-            .end("Only .png files are allowed!");
+            .end("Only .jpg files are allowed!");
         });
       }
 })
