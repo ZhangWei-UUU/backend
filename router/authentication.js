@@ -20,7 +20,6 @@ const handleError = (err, res) => {
 };
 
 router.get('/userlist', checkToken,async (req, res)=>{
-    console.log(req.cookies)
     const result = await queryUser(null,"users");
     res.send(result)
 })
@@ -54,6 +53,7 @@ router.post('/registry', async (req, res)=>{
 
 
 router.get('/logout', function(req, res) {
+    console.log(req.cookies)
     res.clearCookie('jwt');
     res.clearCookie('userId');
     res.clearCookie('userName');
@@ -62,7 +62,6 @@ router.get('/logout', function(req, res) {
 
 router.post('/uploadUserHeader',upload.single('file'),(req,res)=>{
     const tempPath = req.file.path;
-    console.log(req.cookies)
     const targetPath = path.join(process.env.FILE_STORE, `./${req.cookies.userId}header.jpg`);
     if (path.extname(req.file.originalname).toLowerCase() === ".jpg") {
         fs.rename(tempPath, targetPath, err => {

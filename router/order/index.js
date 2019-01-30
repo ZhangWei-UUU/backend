@@ -3,12 +3,13 @@ var express = require('express');
 var router = express.Router();
 var { queryData,insertSingle,deleteSingle,updateSingle } = require('../mongoClient');
 
-router.get('/orders/:orderId', async (req, res)=> {
-    if(req.params.orderId === "all"){
+router.get('/:id', async (req, res)=> {
+    if(req.params.id === "all"){
         const result = await queryData(null,"orders");
+        console.log(result);
         res.send(result)
     }else{
-        const result = await queryData({id:orderId},"orders");
+        const result = await queryData({id:id},"orders");
         res.send(result)
     }  
 });
