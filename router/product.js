@@ -5,6 +5,10 @@ const path = require('path');
 var multer  = require('multer')
 var { insertSingle,queryData,deleteSingle } = require('./mongoClient');
 
+const handleError = (err,res) => {
+    res.status(500).send({success:false,reason:err});
+}
+
 const upload = multer({
     dest: "~/"
 });
@@ -49,7 +53,7 @@ router.post('/upload',upload.single('file'),(req,res)=>{
         });
       }else {
         fs.unlink(tempPath, err => {
-          if (err) return handleError(err, res);
+          if (err) {return handleError(err, res)};
           res
             .status(403)
             .send({success:false,reason:"上传失败"});
