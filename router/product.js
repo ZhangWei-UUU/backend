@@ -6,7 +6,7 @@ var multer  = require('multer')
 var { insertSingle,queryData,deleteSingle } = require('./mongoClient');
 
 const upload = multer({
-    dest: "/Users/zhangwei"
+    dest: "~/"
 });
 
 router.post('/', async (req, res)=> {
@@ -36,7 +36,10 @@ router.delete('/:id',async (req, res)=>  {
 
 router.post('/upload',upload.single('file'),(req,res)=>{
     const tempPath = req.file.path;
-    const targetPath = path.join(process.env.FILE_STORE, `./${req.params.userId}header.jpg`);
+    var currentTime = new Date().getTime();
+    let {userId} = req.query;
+    
+    const targetPath = path.join(process.env.FILE_STORE, `./product_${userId}_${currentTime}.jpg`);
     if (path.extname(req.file.originalname).toLowerCase() === ".jpg") {
         fs.rename(tempPath, targetPath, err => {
           if (err) return handleError(err, res);
