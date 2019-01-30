@@ -49,7 +49,7 @@ router.post('/upload',upload.single('file'),(req,res)=>{
           if (err) return handleError(err, res);
           res
             .status(200)
-            .send({success:true,location:targetPath});
+            .send({success:true, targetPath:`/${targetPath}`});
         });
       }else {
         fs.unlink(tempPath, err => {
