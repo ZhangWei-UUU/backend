@@ -4,7 +4,7 @@ const DB_CONFIG = require("../db");
 
 module.exports = {
     queryUser: async (user,collectionName) => {
-        let db, client;
+        let db, client,queryObject;
         client = await MongoClient.connect(DB_CONFIG.url, { useNewUrlParser: true });
         db = client.db(DB_CONFIG.dbname);
         
@@ -21,6 +21,7 @@ module.exports = {
           client.close();
         }
     },
+
     queryData: async (id,collectionName) => {
       let db, client,queryObject;
       client = await MongoClient.connect(DB_CONFIG.url, { useNewUrlParser: true });
@@ -29,9 +30,13 @@ module.exports = {
       try {
           if(id){
             queryObject = { "_id" : ObjectId(`${id}`) }
-            return await db.collection(collectionName).findOne(queryObject);
+            const res = await db.collection(collectionName).findOne(queryObject);
+            return {success:true,result:res}
           }else{
-            return await db.collection(collectionName).find({}).toArray();
+            
+            const res = await db.collection(collectionName).find({}).toArray();
+            console.log(collectionName)
+            return {success:true,result:res}
           }   
       } catch(err){
         return {success:false,message:err}
@@ -45,9 +50,10 @@ module.exports = {
         try {
           client = await MongoClient.connect(DB_CONFIG.url, { useNewUrlParser: true });
           db = client.db(DB_CONFIG.dbname);
-          return await db.collection(collectionName).insertOne(object);
+          let res = await db.collection(collectionName).insertOne(object);
+          return res.result;
         } catch(err){
-          throw new Error(err)
+          return {success:false,message:err}
         }finally {
           client.close();
         }

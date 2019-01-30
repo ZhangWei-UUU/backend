@@ -34,7 +34,7 @@ router.post('/login', async (req, res)=> {
          }, secret, {
             expiresIn:  1000*60*10 //100分钟到期时间
          });
-        res.cookie('jwt',token,{maxAge:1000*60*10});
+        res.cookie('jwt',token,{maxAge:1000*60*60*8});
         res.cookie('userId',result._id);
         res.cookie('userName',result.userName);
         res.send({success:true,result})
