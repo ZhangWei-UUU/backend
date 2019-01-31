@@ -1,16 +1,20 @@
 var express = require('express');
 var router = express.Router();
-const fs = require("fs");
-const path = require('path');
+var COS = require('cos-nodejs-sdk-v5');
 var multer  = require('multer')
 var { insertSingle,queryData,deleteSingle } = require('./mongoClient');
+
+var cos = new COS({
+    SecretId: 'AKIDpjXtCOajksRtslpaO7CADOdibJtIjmFX',
+    SecretKey: 'fL8lCX7jHmJkDYjjY5TGxUrZU3gnllly'
+});
 
 const handleError = (err,res) => {
     res.status(500).send({success:false,reason:err});
 }
 
 const upload = multer({
-    dest: "~/"
+    dest: "./images"
 });
 
 router.post('/', async (req, res)=> {
@@ -34,7 +38,6 @@ router.get('/:id', async (req, res)=> {
 
 router.delete('/:id',async (req, res)=>  {
     const result = await deleteSingle(req.params.id,"products");
-    console.log(result)
     res.send(result)
 });
 
@@ -42,23 +45,20 @@ router.post('/upload',upload.single('file'),(req,res)=>{
     const tempPath = req.file.path;
     var currentTime = new Date().getTime();
     let {userId} = req.query;
-    
-    const targetPath = path.join(process.env.FILE_STORE, `./product_${userId}_${currentTime}.jpg`);
-    if (path.extname(req.file.originalname).toLowerCase() === ".jpg") {
-        fs.rename(tempPath, targetPath, err => {
-          if (err) return handleError(err, res);
-          res
-            .status(200)
-            .send({success:true, targetPath});
-        });
-      }else {
-        fs.unlink(tempPath, err => {
-          if (err) {return handleError(err, res)};
-          res
-            .status(403)
-            .send({success:false,reason:"上传失败"});
-        });
-      }
+    cos.sliceUploadFile({
+        Bucket: 'test-1253763202',
+        Region: 'ap-shanghai',
+        Key: `/product/${userId}/${currentTime}.jpg`,
+        FilePath: tempPath
+        }, (err, data)=> {
+       
+        if(err){
+            res.status(403).send({success:false,reason:err});
+        }else{
+            console.log(data);
+            res.send({success:true,location:data.Location});
+        }   
+    });
 })
 
 module.exports = router;
