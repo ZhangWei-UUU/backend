@@ -35,7 +35,6 @@ module.exports = {
           }else{
             
             const res = await db.collection(collectionName).find({}).toArray();
-            console.log(collectionName)
             return {success:true,result:res}
           }   
       } catch(err){

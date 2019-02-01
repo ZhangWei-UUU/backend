@@ -53,7 +53,6 @@ router.post('/registry', async (req, res)=>{
 
 
 router.get('/logout', function(req, res) {
-    console.log(req.cookies)
     res.clearCookie('jwt');
     res.clearCookie('userId');
     res.clearCookie('userName');
