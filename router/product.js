@@ -14,7 +14,7 @@ const handleError = (err,res) => {
 }
 
 const upload = multer({
-    dest: "./images"
+    dest: "/tmp"
 });
 
 router.post('/', async (req, res)=> {
@@ -45,20 +45,34 @@ router.post('/upload',upload.single('file'),(req,res)=>{
     const tempPath = req.file.path;
     var currentTime = new Date().getTime();
     let {userId} = req.query;
-    cos.sliceUploadFile({
-        Bucket: 'test-1253763202',
-        Region: 'ap-shanghai',
-        Key: `/product/${userId}/${currentTime}.jpg`,
-        FilePath: tempPath
-        }, (err, data)=> {
-       
+    let params = {
+                    Bucket: 'test-1253763202',
+                    Region: 'ap-shanghai',
+                    Key: `/product/${userId}/${currentTime}.jpg`,
+                    FilePath: tempPath
+                }
+    cos.sliceUploadFile(params, (err, data)=> {
         if(err){
-            res.status(403).send({success:false,reason:err});
+            res.status(500).send({success:false,reason:err});
         }else{
-            console.log(data);
-            res.send({success:true,location:data.Location});
+            res.send({success:true,location:data.Location,Key:data.Key});
         }   
     });
+});
+
+router.delete('/deleteUploaded/*',(req,res)=>{
+    let params = {
+        Bucket: 'test-1253763202',
+        Region: 'ap-shanghai',
+        Key:req.params[0],
+    }
+    cos.deleteObject(params, (err, data)=> {
+        if(err){
+            res.status(500).send({success:false,reason:err});
+        }else{
+            res.send({success:true,location:data.Location});
+        }   
+    });    
 })
 
 module.exports = router;
