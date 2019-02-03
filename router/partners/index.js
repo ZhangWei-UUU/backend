@@ -4,27 +4,27 @@ var { queryData,insertSingle,deleteSingle,updateSingle } = require('../mongoClie
 
 router.get('/:id', async (req, res)=> {
     if(req.params.id === "all"){
-        const result = await queryData(null,"customers");
+        const result = await queryData(null,"partners");
         res.send(result)
     }else{
-        const result = await queryData(req.params.id,"customers");
+        const result = await queryData(req.params.id,"partners");
         res.send(result)
     } 
 });
 
 router.post('/', async (req, res)=> {
     const object = req.body;
-    const result = await insertSingle(object,"customers");
+    const result = await insertSingle(object,"partners");
     res.send(result)
 });
 
 router.delete('/:id',async (req, res)=>  {
-    const result = await deleteSingle(req.params.id,"customers");
+    const result = await deleteSingle(req.params.id,"partners");
     res.send(result)
 });
 
 router.post('/updateSingleCustomer', async (req, res)=>  {
-    const result = await updateSingle(object,"customers");
+    const result = await updateSingle(object,"partners");
     res.send(result)
 });
 

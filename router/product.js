@@ -31,7 +31,7 @@ router.get('/:id', async (req, res)=> {
         const result = await queryData(null,"products");
         res.send(result)
     }else{
-        const result = await queryData({id:id},"products");
+        const result = await queryData(req.params.id,"products");
         res.send(result)
     }  
 });

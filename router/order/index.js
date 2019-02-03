@@ -8,7 +8,7 @@ router.get('/:id', async (req, res)=> {
         const result = await queryData(null,"orders");
         res.send(result)
     }else{
-        const result = await queryData({id:id},"orders");
+        const result = await queryData(req.params.id,"orders");
         res.send(result)
     }  
 });
