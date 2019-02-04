@@ -19,7 +19,7 @@ router.post('/', async (req, res)=> {
     res.send(result)
 });
 
-router.delete('/deleteSingleOrder/:id',async (req, res)=>  {
+router.delete('/:id',async (req, res)=>  {
     const result = await deleteSingle(req.params.id,"orders");
     res.send(result)
 });
