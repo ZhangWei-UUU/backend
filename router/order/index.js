@@ -9,11 +9,12 @@ router.get('/:id', async (req, res)=> {
         res.send(result)
     }else{
         const result = await queryData(req.params.id,"orders");
+        console.log(req.params.id)
         res.send(result)
     }  
 });
 
-router.post('/insertSingleOrder', async (req, res)=> {
+router.post('/', async (req, res)=> {
     const object = req.body;
     const result = await insertSingle(object,"orders");
     res.send(result)
