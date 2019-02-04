@@ -9,7 +9,6 @@ router.get('/:id', async (req, res)=> {
         res.send(result)
     }else{
         const result = await queryData(req.params.id,"orders");
-        console.log(req.params.id)
         res.send(result)
     }  
 });
