@@ -24,8 +24,11 @@ router.delete('/:id',async (req, res)=>  {
     res.send(result)
 });
 
-router.post('/updateSingleOrder', async (req, res)=>  {
-    const result = await updateSingle(object,"orders");
+router.post('/modify', async (req, res)=>  {
+    const updateField = {payment:req.body.payment};
+    const object = req.body;
+    console.log(object,updateField)
+    const result = await updateSingle(object,updateField,"orders");
     res.send(result)
 });
 

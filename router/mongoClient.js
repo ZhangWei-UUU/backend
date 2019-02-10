@@ -58,12 +58,13 @@ module.exports = {
         }
     },
 
-    updateSingle: async (updateObj,userId,collectionName) => {
+    updateSingle: async (object,updateField,collectionName) => {
+        let queryObject = { "_id" : ObjectId(`${object._id}`) }
         let db, client;
         try {
           client = await MongoClient.connect(DB_CONFIG.url, { useNewUrlParser: true });
           db = client.db(DB_CONFIG.dbname);
-          return await db.collection(collectionName).updateOne({object})
+          return await db.collection(collectionName).updateOne(queryObject,{ $set: updateField },)
         } catch(err){
           throw new Error(err)
         }finally {
