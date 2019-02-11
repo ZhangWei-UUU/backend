@@ -27,7 +27,6 @@ router.delete('/:id',async (req, res)=>  {
 router.post('/modify', async (req, res)=>  {
     const updateField = {payment:req.body.payment};
     const object = req.body;
-    console.log(object,updateField)
     const result = await updateSingle(object,updateField,"orders");
     res.send(result)
 });
