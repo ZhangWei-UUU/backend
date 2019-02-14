@@ -6,7 +6,7 @@ var { queryData,insertSingle,deleteSingle,updateSingle } = require('../mongoClie
 const APPID = "wx2dde490fcd9e7a6f";
 const SECRET = "bd9aed4b05137b7846fa61919472c02e"
 router.get('/login', async (req, res)=> {
-   let url = `https://api.weixin.qq.com/sns/jscode2session?appid=${APPID}&secret=${SECRET}&js_code=JSCODE&grant_type=a${req.query.code}`;
+   let url = `https://api.weixin.qq.com/sns/jscode2session?appid=${APPID}&secret=${SECRET}&js_code=${req.query.code}&grant_type=authorization_code`;
    request(url).on("error",(err)=>{
     res.statusCode = "500";
     res.statusMessage = err;
