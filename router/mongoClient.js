@@ -26,14 +26,12 @@ module.exports = {
       let db, client,queryObject;
       client = await MongoClient.connect(DB_CONFIG.url, { useNewUrlParser: true });
       db = client.db(DB_CONFIG.dbname);
-      
       try {
           if(id){
             queryObject = { "_id" : ObjectId(`${id}`) }
             const res = await db.collection(collectionName).findOne(queryObject);
             return {success:true,result:res}
           }else{
-            
             const res = await db.collection(collectionName).find({}).toArray();
             return {success:true,result:res}
           }   
@@ -43,6 +41,26 @@ module.exports = {
         client.close();
       }
     },
+
+    queryWeixinData: async (id,collectionName) => {
+        let db, client,queryObject;
+        client = await MongoClient.connect(DB_CONFIG.url, { useNewUrlParser: true });
+        db = client.db(DB_CONFIG.dbname);
+        try {
+            if(id){
+              queryObject = { "openid" : id }
+              const res = await db.collection(collectionName).findOne(queryObject);
+              return {success:true,result:res}
+            }else{
+              const res = await db.collection(collectionName).find({}).toArray();
+              return {success:true,result:res}
+            }   
+        } catch(err){
+          return {success:false,message:err}
+        }finally {
+          client.close();
+        }
+      },
 
     insertSingle: async (object,collectionName) => {
         let db, client;
